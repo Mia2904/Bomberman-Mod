@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>Cstrike MOTD</title>
+<style type="text/css">
+pre 	{
+		font-family:Verdana,Tahoma;
+		color:#FFFFFF;
+		font-size:14px;
+    	}
+body	{
+		background:#000000;
+		margin-left:8px;
+		margin-top:0px;
+		}
+a	{
+    	text-decoration:    underline;
+	}
+</style>
+</head>
+<body scroll="yes">
+<pre>
+<center>Items Extra</center>
+Los items extra mejoran tus habilidades durante el juego. En cada ronda el contador de items extra se reinicia.
+Hay 7 items extra que pueden aparecer durante el juego:
+
+Extra Bomb
+Puedes plantar una bomba mas al mismo tiempo.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7662"></center>
+
+Fuego
+Aumenta en 1 cuadro el rango de la explosion de tus bombas.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7663"></center>
+
+Maximo Fuego
+Maximiza el alcance de la explosion de tus bombas (16 cuadros).
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7664"></center>
+
+Skate
+Aumenta tu velocidad en 20.0 unidades/s.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7667"></center>
+
+Corazon
+Obtienes una vida adicional, asi puedes sobrevivir a una explosion.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7668"></center>
+
+Patada
+Te permite patear bombas.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7666"></center>
+
+Guante
+Te permite lanzar bombas.
+<center><img src="https://amxmodx-es.com/attachment.php?aid=7665"></center>
+</pre>
+</body>
+</html>

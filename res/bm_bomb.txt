@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Cstrike MOTD</title>
+<style type="text/css">
+pre 	{
+		font-family:Verdana,Tahoma;
+		color:#FFFFFF;
+		font-size:14px;
+    	}
+body	{
+		background:#000000;
+		margin-left:8px;
+		margin-top:0px;
+		}
+a	{
+    	text-decoration:    underline;
+	}
+</style>
+</head>
+<body scroll="yes">
+<pre>
+<center>Lanzar Bombas
+<img src="https://amxmodx-es.com/attachment.php?aid=7665"></center>
+Si has conseguido el extra item 'Guante' (Puedes saberlo si en el hud aparece "Lanzar bombas: Si") podras lanzar bombas.
+Para hacerlo, planta una bomba y enseguida presiona ATTACK1 (Por defecto: Click izquierdo). Si juegas con la camara desde arriba, tambien puedes lanzar bombas con JUMP (Por defecto: espacio).
+Manten el click/espacio presionado, apunta y suelta el boton para lanzar la bomba. Con la camara desde arriba, puedes dirigir la bomba con las teclas de movimiento (W/A/S/D).
+Tambien puedes hacerlo si un enemigo planta una bomba donde estas (las bombas se pueden atravesar cuando son plantadas).
+NOTA: No puedes lanzar bombas en diagonal, es solo en una direccion.
+
+<center>Patear Bombas
+<img src="https://amxmodx-es.com/attachment.php?aid=7666"></center>
+Si has conseguido el extra item 'Patada' (Puedes saberlo si en el hud aparece "Patear bombas: Si") podras patear bombas.
+Para hacerlo, planta una bomba, sal de ella (para que se vuelva solida) y enseguida dirigete a ella.
+Cuando la toques, se movera hacia la direccion en que la pateaste hasta chocar con algun obstaculo.
+</pre>
+</body>
+</html>

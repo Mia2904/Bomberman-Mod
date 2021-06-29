@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Cstrike MOTD</title>
+<style type="text/css">
+pre 	{
+		font-family:Verdana,Tahoma;
+		color:#FFFFFF;
+		font-size:14px;
+    	}
+body	{
+		background:#000000;
+		margin-left:8px;
+		margin-top:0px;
+		}
+a	{
+    	text-decoration:    underline;
+	}
+</style>
+</head>
+<body scroll="yes">
+<pre>
+<center>Bomberman</center>
+El juego consiste en destruir a tus oponentes reventandolos con bombas.
+Para lograrlo, debes destruir los obstaculos (las cajas), armarte con items extra y atacar a tus oponentes con habilidad.
+
+Para plantar una bomba, presiona la tecla USAR (Por defecto: E)
+Las bombas demoran 2.5 segundos en explotar, ¡ten cuidado de estar cerca de la explosion!
+</pre>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Cstrike MOTD</title>
+<style type="text/css">
+pre 	{
+		font-family:Verdana,Tahoma;
+		color:#FFFFFF;
+		font-size:14px;
+    	}
+body	{
+		background:#000000;
+		margin-left:8px;
+		margin-top:0px;
+		}
+a	{
+    	text-decoration:    underline;
+	}
+</style>
+</head>
+<body scroll="yes">
+<pre>
+Bomberman Mod esta hecho para jugarse con un maximo de 4 jugadores.
+Para cubrir la totalidad de slots del servidor, el servidor se divide en salones.
+Cada salon puede contener hasta 4 jugadores.
+
+Para comenzar a jugar, elige un salon con un slot disponible y espera a que termine la ronda actual.
+¡Buena Suerte!
+</pre>
+</body>
+</html>
