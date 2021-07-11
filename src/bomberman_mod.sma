@@ -193,6 +193,8 @@ enum (+= 100)
 
 const HIDE_RHA = (1<<3);
 const HIDE_MONEY = (1<<5);
+const HIDE_CROSSHAIR = (1<<6);
+const HIDE_UNNEEDED = HIDE_MONEY | HIDE_RHA | HIDE_CROSSHAIR;
 
 new g_regamedll;
 new g_msgShowMenu;
@@ -439,7 +441,7 @@ public clcmd_chooseteam(id)
 // Ocultar el dinero, radar, vida, armadura
 public message_hideweapon(junk1, junk2, id)
 {
-	set_msg_arg_int(1, ARG_BYTE, HIDE_MONEY | HIDE_RHA);
+	set_msg_arg_int(1, ARG_BYTE, HIDE_UNNEEDED);
 }
 
 // Ocultar el dinero, radar, vida, armadura
@@ -449,7 +451,7 @@ public event_ResetHUD(id)
 		return;
 	
 	message_begin(MSG_ONE_UNRELIABLE, g_msgHideWeapon, _, id);
-	write_byte(HIDE_MONEY | HIDE_RHA);
+	write_byte(HIDE_UNNEEDED);
 	message_end();
 }
 
