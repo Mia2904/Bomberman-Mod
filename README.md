@@ -33,5 +33,8 @@
 * metita - Ayudó a probar el modo (2020), búsqueda de bugs, sugerencias e ideas, modificación de modelos nuevos.
 * Hudson Soft - Bomberman
 
+### Soporte
+* AM-ES: https://amxmodx-es.com/showthread.php?tid=13587
+
 ### To-do
 * English translation
