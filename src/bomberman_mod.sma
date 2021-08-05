@@ -72,6 +72,7 @@
 
 #if AMXX_VERSION_NUM < 183
 #include <dhudmessage>
+#define client_disconnected client_disconnect
 #endif
 
 #define PLUGIN "Bomberman Mod"
@@ -102,11 +103,19 @@ const Float:BOMB_Z_POS = 70.0; // Altura a la que aparecen las bombas, recomiend
 const Float:EXP_RADIUS = 12.0; // Radio de explosion en cada bloque, se usa para buscar jugadores en cada explosion
 const Float:GRAVITY = 1700.0; // Gravedad del servidor, recomiendo no modificarlo
 
-// Candidad de powerups por ronda
-new const MAX_ITEMS[POWERUPS] = { 8, 6, 8, 2, 2, 2, 1 };
-	
+// Candidad de powerups que se generan en la sala por ronda
+new const MAX_ITEMS[POWERUPS] = { 
+	8, // Bomba
+	6, // Fuego
+	8, // Patin
+	2, // Vida
+	2, // Guantes
+	2, // Botas
+	1  // Fuego maximo
+};
+
 // Cantidad de espacios en blanco en el mapa (lugares aleatorios)
-const MAX_BLANKS = 10;
+const MAX_BLANKS = 15;
 
 // Cuantas cajas se crean por iteracion al iniciar el juego (reducir si hay lag)
 const LOOP_BOXES = 15;
@@ -269,6 +278,10 @@ public plugin_init()
 	register_clcmd("say_team", "clcmd_say_team");
 	register_clcmd("say /cam", "clcmd_say_cam");
 	
+	register_clcmd("radio1", "clcmd_radio");
+	register_clcmd("radio2", "clcmd_radio");
+	register_clcmd("radio3", "clcmd_radio");
+	
 	register_clcmd("chooseteam", "clcmd_chooseteam");
 	register_clcmd("jointeam", "clcmd_chooseteam");
 	
@@ -321,7 +334,6 @@ public plugin_cfg()
 
 public set_cvars()
 {
-	set_cvar_num("mp_timelimit", 0);
 	set_cvar_num("mp_limitteams", 0);
 	set_cvar_num("mp_autoteambalance", 0);
 	set_cvar_num("mp_autokick", 0);
@@ -338,6 +350,7 @@ public set_cvars()
 		set_cvar_num("mp_max_teamkills", 0);
 		set_cvar_num("mp_roundrespawn_time", 0);
 		set_cvar_num("mp_auto_join_team", 1);
+		set_cvar_string("humans_join_team", "ANY");
 	}
 	
 	// Tasks para huds de poderes y puntajes
@@ -356,11 +369,7 @@ public client_putinserver(id)
 	reset_vars(id, 1);
 }
 
-#if AMXX_VERSION_NUM < 183
-public client_disconnect(id)
-#else
 public client_disconnected(id)
-#endif
 {
 	g_status[id] = STATUS_DISCONNECTED;
 	
@@ -487,6 +496,11 @@ public clcmd_say_cam(id)
 {
 	menu_game(id, 0, 2);
 	return PLUGIN_CONTINUE;
+}
+
+public clcmd_radio(id)
+{
+	return PLUGIN_HANDLED;
 }
 
 /*================================================================================
