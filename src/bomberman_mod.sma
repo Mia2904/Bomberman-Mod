@@ -75,12 +75,9 @@
 #define client_disconnected client_disconnect
 #endif
 
-#define PLUGIN "Bomberman Mod"
-#define VERSION "1.13"
-
 #pragma semicolon 1;
 
-enum _:POWERUPS // No tocar
+enum _:POWERUPS // Don't touch this!
 {
 	MAXBOMBS = 0,
 	FIRE,
@@ -92,32 +89,32 @@ enum _:POWERUPS // No tocar
 };
 
 /*================================================================================
- [Constantes editables]
+ [Editable constants]
 =================================================================================*/
 
-const Float:PLANT_DELAY = 0.1; // Desde que se presiona E hasta que aparece la bomba
-const Float:DETONATE_DELAY = 2.5; // Tiempo que tarda la bomba en explotar
-const Float:KICK_SPEED = 500.0; // Velocidad a la que la bomba se mueve al ser pateada
-const Float:THROW_SPEED = 200.0; // Velocidad a la que la bomba se mueve al ser lanzada
-const Float:BOMB_Z_POS = 70.0; // Altura a la que aparecen las bombas, recomiendo no modificarlo
-const Float:EXP_RADIUS = 12.0; // Radio de explosion en cada bloque, se usa para buscar jugadores en cada explosion
-const Float:GRAVITY = 1700.0; // Gravedad del servidor, recomiendo no modificarlo
+const Float:PLANT_DELAY = 0.1; // Time interval in seconds, since E is pressed until the bomb is placed.
+const Float:DETONATE_DELAY = 2.5; // Time in seconds it takes a bomb to explode (it's 2.5 seconds in Super Bomberman).
+const Float:KICK_SPEED = 500.0; // Speed the bomb will move when kicked (it's actually lower due to friction).
+const Float:THROW_SPEED = 200.0; // Horizontal speed the bomb will move when thrown.
+const Float:BOMB_Z_POS = 70.0; // Height (absolute Z coord) the bombs will be placed at when planted. I suggest not to edit this.
+const Float:EXP_RADIUS = 12.0; // Explosion radius in each block, used to find victims.
+const Float:GRAVITY = 1700.0; // Server gravity. Kind of bugfix because the blocks in the map are too small and can be climbed without this.
 
-// Candidad de powerups que se generan en la sala por ronda
+// How many powerups are spawned in each round
 new const MAX_ITEMS[POWERUPS] = { 
-	8, // Bomba
-	6, // Fuego
-	8, // Patin
-	2, // Vida
-	2, // Guantes
-	2, // Botas
-	1  // Fuego maximo
+		8 // Bomb
+	,	6 // Fire
+	,	8 // Skates (for extra speed)
+	,	2 // Extra live
+	,	2 // Gloves
+	,	2 // Shoes (for kicking bombs)
+	,	1 // Full fire
 };
 
-// Cantidad de espacios en blanco en el mapa (lugares aleatorios)
+// Amount of blank spaces (not spawned boxes) when the map is generated
 const MAX_BLANKS = 15;
 
-// Cuantas cajas se crean por iteracion al iniciar el juego (reducir si hay lag)
+// How many boxes are created in each iteration when starting a new round (prevents packet overflow, reduce if too laggy)
 const LOOP_BOXES = 15;
 
 new const BOMB_CLASSNAME[] = "BM_BOMB";
@@ -200,6 +197,7 @@ enum (+= 100)
 	TASK_END
 };
 
+// Those constants were not defined in AMXX 1.8.2 (HIDEHUD_*)
 const HIDE_RHA = (1<<3);
 const HIDE_MONEY = (1<<5);
 const HIDE_CROSSHAIR = (1<<6);
@@ -212,6 +210,13 @@ new g_msgShowMenu;
 #define HasVGUIMenus(%1) (get_pdata_int(%1, m_iUserPrefs) & PREFS_VGUIMENUS)
 #define SetVGUIMenus(%1) set_pdata_int(%1, m_iUserPrefs, (get_pdata_int(%1, m_iUserPrefs) | PREFS_VGUIMENUS))
 #define RemoveVGUIMenus(%1) set_pdata_int(%1, m_iUserPrefs, (get_pdata_int(%1, m_iUserPrefs) & ~PREFS_VGUIMENUS))
+
+#define PLUGIN "Bomberman Mod"
+#define VERSION "1.13"
+#define AUTHOR "Mia2904"
+
+#define REPOSITORY "https://github.com/Mia2904/Bomberman-Mod"
+#define SUPPORT_THREAD "https://amxmodx-es.com/showthread.php?tid=13587"
 
 /*================================================================================
  [Inicio del plugin]
@@ -257,7 +262,7 @@ public plugin_precache()
 
 public plugin_init()
 {
-	register_plugin(PLUGIN, VERSION, "Mia2904");
+	register_plugin(PLUGIN, VERSION, AUTHOR);
 	
 	new map[32];
 	get_mapname(map, 31);
@@ -833,9 +838,9 @@ public menu_info(id, menu, item)
 			}
 			case 4:
 			{
-				print_color(id, "^x04[INFO] Bomberman Mod - Version %s^x01.^x03 Hecho por Mia2904. Lima, Peru. 2015-2020^x01.", VERSION);
-				print_color(id, "^x04[INFO]^x01 Hilo oficial en^x03 AMX-ES:^x04 https://amxmodx-es.com/Thread-Bomberman-Mod");
-				print_color(id, "^x04[INFO]^x01 Sugerencias? Bugs? Enviame un mensaje en AMX-ES!");
+				print_color(id, "^x04[INFO] Bomberman Mod - Version %s^x01.^x03 Hecho por %s. Lima, Peru. 2015-2020^x01.", VERSION, AUTHOR);
+				print_color(id, "^x04[INFO]^x01 Github:^x04 %s", REPOSITORY);
+				print_color(id, "^x04[INFO]^x01 Hilo oficial en^x03 AMX-ES:^x04 %s", SUPPORT_THREAD);
 			}
 			case 5:
 			{
@@ -1826,7 +1831,7 @@ public fw_PowerUpTouch(ent, id)
 	if (!is_user_alive(id))
 		return;
 	
-	static powerup, item[20];
+	static powerup;
 	powerup = entity_get_int(ent, EV_INT_iuser2);
 	client_cmd(id, "spk ^"%s^"", SOUND_ITEM);
 	remove_entity(ent);
@@ -1837,13 +1842,13 @@ public fw_PowerUpTouch(ent, id)
 			print_color(id, "^x04[BM]^x01 Has recogido una^x04 bomba^x01, podrás plantar^x03 una bomba más al mismo tiempo^x01.");
 		case FIRE:
 		{
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego^x01, tus bombas tendrán^x03 un bloque más de alcance^x01.", item);
+			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego^x01, tus bombas tendrán^x03 un bloque más de alcance^x01.");
 			if (g_powerups[id][FIRE] == 15)
 				return;
 		}
 		case SKATE:
 		{
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 skate^x01,^x03 te moverás más rápido^x01.", item);
+			print_color(id, "^x04[BM]^x01 Has recogido un^x04 skate^x01,^x03 te moverás más rápido^x01.");
 			
 			if (g_powerups[id][SKATE] >= 9)
 				return;
@@ -1859,7 +1864,7 @@ public fw_PowerUpTouch(ent, id)
 		case FULL_FIRE:
 		{
 			g_powerups[id][FIRE] = 15;
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego máximo^x01, tus bombas tendrán^x03 máximo poder^x01.", item);
+			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego máximo^x01, tus bombas tendrán^x03 máximo poder^x01.");
 			return;
 		}
 	}
@@ -2401,8 +2406,13 @@ screen_fade(id)
 
 print_color(id, text[], any:...)
 {
-	static msg[191];
+	static msg[191], len;
 	vformat(msg, charsmax(msg), text, 3);
+	len = strlen(msg);
+
+	replace_all(msg, len, "!y", "^x01");
+	replace_all(msg, len, "!t", "^x03");
+	replace_all(msg, len, "!g", "^x04");
 	
 	message_begin(MSG_ONE_UNRELIABLE, g_msgSayText, .player = id);
 	write_byte(33);

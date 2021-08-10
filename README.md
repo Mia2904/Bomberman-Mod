@@ -31,12 +31,15 @@
 * [ErikMav94](https://amxmodx-es.com/member.php?action=profile&uid=267) - A lot of help during development.
 * [jay-jay](https://amxmodx-es.com/member.php?action=profile&uid=308) - Bomberman models.
 * [Exolent](https://forums.alliedmods.net/member.php?u=25165) - Code from Team Manager All-In-One.
-* [Totopizza](https://github.com/oaus) - Helped testing with real people.
+* [Totopizza](https://github.com/oaus) - Helped testing with real people. Multilingual strings.
 * [metita](https://github.com/metita) - Testing (2020), finding bugs, new ideas. Remade models.
+* [Pokemoshka](https://dev-cs.ru/members/207) - Russian translation.
 * Hudson Soft - Bomberman.
 
 ### Support
 * AM-ES (Spanish): https://amxmodx-es.com/showthread.php?tid=13587
+* Dev-CS (Russian): https://dev-cs.ru/threads/16897
+* Github (English)
 
 ## Español
 
@@ -69,9 +72,11 @@
 * [ErikMav94](https://amxmodx-es.com/member.php?action=profile&uid=267) - Me ayudó un montón con el mod en sus tiempos de desarrollo.
 * [jay-jay](https://amxmodx-es.com/member.php?action=profile&uid=308) - Los bonitos models.
 * [Exolent](https://forums.alliedmods.net/member.php?u=25165) - Utilizo algo de código de su plugin Team Manager All-In-One (link).
-* [Totopizza](https://github.com/oaus) - Me ayudó a probar el mod con personas reales y fixear algunos bugs que había pasado por alto.
+* [Totopizza](https://github.com/oaus) - Me ayudó a probar el mod con personas reales y fixear algunos bugs que había pasado por alto. Strings multilenguaje.
 * [metita](https://github.com/metita) - Ayudó a probar el modo (2020), búsqueda de bugs, sugerencias e ideas, modificación de modelos nuevos.
+* [Pokemoshka](https://dev-cs.ru/members/207) - Traducción al ruso.
 * Hudson Soft - Bomberman.
 
 ### Soporte
 * AM-ES: https://amxmodx-es.com/showthread.php?tid=13587
+* Github (Ingles)

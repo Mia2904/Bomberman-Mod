@@ -1,0 +1,185 @@
+[en]
+MENU_TAG = Bomberman Mod
+
+MENU_OPT_BACK = \yBack
+MENU_OPT_EXIT = \yClose
+MENU_OPT_CANCEL = \yCancel
+
+MENU_INTRO_TITLE = \wWelcome!
+MENU_INTRO_JOIN = Join a room
+MENU_INTRO_SPECT = Join as spectator
+MENU_INTRO_INFO = Information
+
+MENU_CONFIRM_TITLE = \wDo you really want to lave?
+MENU_CONFIRM_YES = Yes, leave room
+MENU_CONFIRM_NO = No, back to main menu
+
+MENU_INFO_TITLE = \wInformation
+MENU_INFO_CHOOSE_ROOM = Pick a room
+MENU_INFO_HOW_TO = How to play
+MENU_INFO_ITEMS = Extra-items
+MENU_INFO_THROW = Kick and throw bombs
+MENU_INFO_ABOUT = About %s
+
+MENU_ROOMS_TITLE = Join a room
+MENU_ROOMS_ROOM = Room
+
+HUD_INFO_BOMBS = Bombs
+HUD_INFO_LIFES = Lives
+HUD_INFO_FIRE = Fire
+HUD_INFO_SPEED = Speed
+HUD_INFO_KICK_BOMBS = You can KICK bombs
+HUD_INFO_THROW_BOMBS = You can THROW bombs
+
+HUD_END_WIN = %s won!
+HUD_END_DRAW = No one won.
+
+MENU_GAME_LEAVE_ROOM = Leave room
+MENU_GAME_MUSIC_ON = Music:\r [\yON\r]
+MENU_GAME_MUSIC_OFF = Music:\r [\dOFF\r]
+MENU_GAME_CAM = Camera:\r [\y%s\r]
+MENU_GAME_CAM_FIRST_PERSON = 1st person
+MENU_GAME_CAM_UP = From above
+
+CHAT_TAG = !g[BM]!y
+CHAT_ROOM = (Room %d)
+CHAT_MAIN_MENU = Press!g M!y to open!t game menu!y.
+
+CHAT_INFO_MSG1 = !g[INFO] Bomberman Mod - Version %s!y. Created by!t %s!y in Lima, Peru. 2015-2020!y.
+CHAT_INFO_MSG2 = !g[INFO]!y Github:!g %s
+CHAT_INFO_MSG3 = !g[INFO]!y Support thread in!t AMX-ES!y (Spanish):!g %s
+
+CHAT_ROOM_FULL = Room is full.
+CHAT_GAME_WILL_START = You need to wait for next round to play.
+
+CHAT_POWERUP_MAXBOMBS = You picked up a!g bomb!y, now you can!t plant one more bomb at the same time!y.
+CHAT_POWERUP_FIRE = You picked up!g fire!y, your bombs will explode!t one block further!y.
+CHAT_POWERUP_SKATE = You picked up a!g skate!y,!g you will move faster!y.
+CHAT_POWERUP_HEART = You picked up an!g extra live!y.
+CHAT_POWERUP_GLOVES = You picked up some!g gloves!y, now you can!t throw bombs!y.
+CHAT_POWERUP_KICK = You picked up some!g shoes!y, now you can!t kick bombs!y.
+CHAT_POWERUP_FULLFIRE = You picked up a!g full fire!y, your bombs now have!t maximum power!y.
+
+[es]
+MENU_TAG = Bomberman Mod
+
+MENU_OPT_BACK = \yRegresar
+MENU_OPT_EXIT = \yCerrar
+MENU_OPT_CANCEL = \yCancelar
+
+MENU_INTRO_TITLE = \w¡Bienvenido!
+MENU_INTRO_JOIN = Unirse a un salón
+MENU_INTRO_SPECT = Entrar como espectador
+MENU_INTRO_INFO = Información del juego
+
+MENU_CONFIRM_TITLE = \w¿Confirma que desea salir?
+MENU_CONFIRM_YES = Sí, salir de la salón
+MENU_CONFIRM_NO = No, regresar al menú del juego
+
+MENU_INFO_TITLE = \wInformación
+MENU_INFO_CHOOSE_ROOM = Elegir un salon
+MENU_INFO_HOW_TO = ¿Cómo jugar?
+MENU_INFO_ITEMS = Items extra
+MENU_INFO_THROW = Lanzar y patear bombas
+MENU_INFO_ABOUT = Acerca de %s
+
+MENU_ROOMS_TITLE = Unirse a una sala
+MENU_ROOMS_ROOM = Sala
+
+HUD_INFO_BOMBS = Bombas
+HUD_INFO_LIFES = Vidas
+HUD_INFO_FIRE = Fuego
+HUD_INFO_SPEED = Velocidad
+HUD_INFO_KICK_BOMBS = Puedes PATEAR bombas
+HUD_INFO_THROW_BOMBS = Puedes LANZAR bombas
+
+HUD_END_WIN = %s ha ganado
+HUD_END_DRAW = Nadie ha ganado.
+
+MENU_GAME_LEAVE_ROOM = Salir del salón
+MENU_GAME_MUSIC_ON = Música:\r [\yON\r]
+MENU_GAME_MUSIC_OFF = Música:\r [\dOFF\r]
+MENU_GAME_CAM = Cámara:\r [\y%s\r]
+MENU_GAME_CAM_FIRST_PERSON = 1ra persona
+MENU_GAME_CAM_UP = Desde arriba
+
+CHAT_TAG = !g[BM]!y
+CHAT_ROOM = (Sala %d)
+CHAT_MAIN_MENU = Presiona!g M!y para abrir el!t menú del juego!y.
+
+CHAT_INFO_MSG1 = !g[INFO] Bomberman Mod - Version %s!y.!t Hecho por %s. Lima, Peru. 2015-2020!y.
+CHAT_INFO_MSG2 = !g[INFO]!y Github:!g %s
+CHAT_INFO_MSG3 = !g[INFO]!y Hilo oficial en!t AMX-ES:!g %s
+
+CHAT_ROOM_FULL = La sala está llena.
+CHAT_GAME_WILL_START = Comenzarás a jugar cuando reinicie la ronda.
+
+CHAT_POWERUP_MAXBOMBS = Has recogido una!g bomba!y, podrás plantar!t una bombas más al mismo tiempo!y.
+CHAT_POWERUP_FIRE = Has recogido un!g fuego!y, tus bombas tendrán!t un bloque más de alcance!y.
+CHAT_POWERUP_SKATE = Has recogido un!g skate!y,!g te moverás más rápido!y.
+CHAT_POWERUP_HEART = Has recogido una!g vida extra!y.
+CHAT_POWERUP_GLOVES = Has recogido un!g guante!y, ahora!t podrás lanzar bombas!y.
+CHAT_POWERUP_KICK = Has recogido unos!g zapatos!y, ahora!t podrás patear bombas!y.
+CHAT_POWERUP_FULLFIRE = Has recogido un!g fuego máximo!y, tus bombas tendrán!t el máximo poder!y.
+
+[ru]
+MENU_TAG = Bomberman Mod
+
+MENU_OPT_BACK = \yНазад
+MENU_OPT_EXIT = \yВыход
+MENU_OPT_CANCEL = \yОтмена
+
+MENU_INTRO_TITLE = \wДобро пожаловать!
+MENU_INTRO_JOIN = Войти в комнату
+MENU_INTRO_SPECT = Войти в качестве зрителя
+MENU_INTRO_INFO = Информация об игре
+
+MENU_CONFIRM_TITLE = \wПодтверждаете ли вы, что хотите уйти?
+MENU_CONFIRM_YES = Да, покинуть комнату
+MENU_CONFIRM_NO = Нет, вернуться в меню игры
+
+MENU_INFO_TITLE = \wИнформация
+MENU_INFO_CHOOSE_ROOM = Выбор комнаты
+MENU_INFO_HOW_TO = Как играть
+MENU_INFO_ITEMS = Дополнительные предметы
+MENU_INFO_THROW = Метание и пинание бомб
+MENU_INFO_ABOUT = О %s
+
+MENU_ROOMS_TITLE = Присоединиться к комнате
+MENU_ROOMS_ROOM = Номер
+
+HUD_INFO_BOMBS = Бомба
+HUD_INFO_LIFES = Жизнь
+HUD_INFO_FIRE = Огонь
+HUD_INFO_SPEED = Ускорение
+HUD_INFO_KICK_BOMBS = Вы можете пинать бомбы
+HUD_INFO_THROW_BOMBS = Вы можете бросать бомбы
+
+HUD_END_WIN = %s победил!
+HUD_END_DRAW = Никто не выиграл.
+
+MENU_GAME_LEAVE_ROOM = Выйти из комнаты
+MENU_GAME_MUSIC_ON = Музыка:\r [\yВКЛ\r]
+MENU_GAME_MUSIC_OFF = Музыка:\r [\dВЫКЛ\r]
+MENU_GAME_CAM = Вид камеры:\r [\y%s\r]
+MENU_GAME_CAM_FIRST_PERSON = От первого лица
+MENU_GAME_CAM_UP = Сверху
+
+CHAT_TAG = !g[BM]!y 
+CHAT_ROOM = (Комната %d)
+CHAT_MAIN_MENU = Нажмите!g M!y чтобы открыть!t меню!y.
+
+CHAT_INFO_MSG1 = !g[INFO] Bomberman Mod - Версия %s!y.!t Автор %s. Lima, Peru. 2015-2020!y.
+CHAT_INFO_MSG2 = !g[INFO]!y Github:!g %s
+CHAT_INFO_MSG3 = !g[INFO]!y Поддержка!t AMX-ES:!g %s
+
+CHAT_ROOM_FULL = Комната заполнена.
+CHAT_GAME_WILL_START = Вы начнете играть в новом раунде.
+
+CHAT_POWERUP_MAXBOMBS = !yВы подобрали!g бомбу!y, вы можете установить!t еще одну бомбу!y.
+CHAT_POWERUP_FIRE = !yВы подобрали!g огонь!y, выши бомбы будут будут взрываться!t на один блок дальше!y.
+CHAT_POWERUP_SKATE = !yВы подобрали скейт!g роликовые коньки!y,!g выша скорость будет выше!y.
+CHAT_POWERUP_HEART = !yВы подобрали одну!g жизнь!y.
+CHAT_POWERUP_GLOVES = !yВы подобрали!g перчатку!y, теперь!t вы можете бросать бомбы!y.
+CHAT_POWERUP_KICK = !yВы подобрали!g теперь!y, теперь!t вы можете пинать бомбы!y.
+CHAT_POWERUP_FULLFIRE = !yВы подобрали!g большой огонь!y, теперь ваши бомбы имеют!t максимальную мощность!y.
