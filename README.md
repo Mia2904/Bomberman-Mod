@@ -33,13 +33,13 @@
 * [Exolent](https://forums.alliedmods.net/member.php?u=25165) - Code from Team Manager All-In-One.
 * [Totopizza](https://github.com/oaus) - Helped testing with real people. Multilingual strings.
 * [metita](https://github.com/metita) - Testing (2020), finding bugs, new ideas. Remade models.
-* [Pokemoshka](https://dev-cs.ru/members/207) - Russian translation.
+* [Pokemoshka](https://dev-cs.ru/members/207) - Russian translation and support.
 * Hudson Soft - Bomberman.
 
 ### Support
+* Github (English): https://github.com/Mia2904/Bomberman-Mod/issues
 * AM-ES (Spanish): https://amxmodx-es.com/showthread.php?tid=13587
 * Dev-CS (Russian): https://dev-cs.ru/threads/16897
-* Github (English)
 
 ## Español
 
@@ -74,9 +74,10 @@
 * [Exolent](https://forums.alliedmods.net/member.php?u=25165) - Utilizo algo de código de su plugin Team Manager All-In-One (link).
 * [Totopizza](https://github.com/oaus) - Me ayudó a probar el mod con personas reales y fixear algunos bugs que había pasado por alto. Strings multilenguaje.
 * [metita](https://github.com/metita) - Ayudó a probar el modo (2020), búsqueda de bugs, sugerencias e ideas, modificación de modelos nuevos.
-* [Pokemoshka](https://dev-cs.ru/members/207) - Traducción al ruso.
+* [Pokemoshka](https://dev-cs.ru/members/207) - Traducción y soporte en ruso.
 * Hudson Soft - Bomberman.
 
 ### Soporte
-* AM-ES: https://amxmodx-es.com/showthread.php?tid=13587
-* Github (Ingles)
+* Github (Inglés): https://github.com/Mia2904/Bomberman-Mod/issues
+* AM-ES (Español): https://amxmodx-es.com/showthread.php?tid=13587
+* Dev-CS (Ruso): https://dev-cs.ru/threads/16897
