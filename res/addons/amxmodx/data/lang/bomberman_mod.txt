@@ -31,6 +31,8 @@ HUD_INFO_SPEED = Speed
 HUD_INFO_KICK_BOMBS = You can KICK bombs
 HUD_INFO_THROW_BOMBS = You can THROW bombs
 
+HUD_SCORE_TITLE = Scores
+
 HUD_END_WIN = %s won!
 HUD_END_DRAW = No one won.
 
@@ -93,6 +95,8 @@ HUD_INFO_SPEED = Velocidad
 HUD_INFO_KICK_BOMBS = Puedes PATEAR bombas
 HUD_INFO_THROW_BOMBS = Puedes LANZAR bombas
 
+HUD_SCORE_TITLE = Puntajes
+
 HUD_END_WIN = %s ha ganado
 HUD_END_DRAW = Nadie ha ganado.
 
@@ -154,6 +158,8 @@ HUD_INFO_FIRE = Огонь
 HUD_INFO_SPEED = Ускорение
 HUD_INFO_KICK_BOMBS = Вы можете пинать бомбы
 HUD_INFO_THROW_BOMBS = Вы можете бросать бомбы
+
+HUD_SCORE_TITLE = оценки
 
 HUD_END_WIN = %s победил!
 HUD_END_DRAW = Никто не выиграл.
