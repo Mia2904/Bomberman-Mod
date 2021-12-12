@@ -19,7 +19,12 @@ MENU_INFO_CHOOSE_ROOM = Pick a room
 MENU_INFO_HOW_TO = How to play
 MENU_INFO_ITEMS = Extra-items
 MENU_INFO_THROW = Kick and throw bombs
-MENU_INFO_ABOUT = About %s
+MENU_INFO_ABOUT = About %L
+
+MENU_MOTD_CHOOSE_ROOM = http://cs.next21.ru/dq/bomberman/en/bm_room.html
+MENU_MOTD_HOW_TO = http://cs.next21.ru/dq/bomberman/en/bm_play.html
+MENU_MOTD_ITEMS = http://cs.next21.ru/dq/bomberman/en/bm_extras.html
+MENU_MOTD_THROW = http://cs.next21.ru/dq/bomberman/en/bm_bomb.html
 
 MENU_ROOMS_TITLE = Join a room
 MENU_ROOMS_ROOM = Room
@@ -33,13 +38,14 @@ HUD_INFO_THROW_BOMBS = You can THROW bombs
 
 HUD_SCORE_TITLE = Scores
 
+HUD_GAME_START = The game starts!
 HUD_END_WIN = %s won!
 HUD_END_DRAW = No one won.
 
 MENU_GAME_LEAVE_ROOM = Leave room
 MENU_GAME_MUSIC_ON = Music:\r [\yON\r]
 MENU_GAME_MUSIC_OFF = Music:\r [\dOFF\r]
-MENU_GAME_CAM = Camera:\r [\y%s\r]
+MENU_GAME_CAM = Camera:\r [\y%L\r]
 MENU_GAME_CAM_FIRST_PERSON = 1st person
 MENU_GAME_CAM_UP = From above
 
@@ -83,7 +89,12 @@ MENU_INFO_CHOOSE_ROOM = Elegir un salon
 MENU_INFO_HOW_TO = ¿Cómo jugar?
 MENU_INFO_ITEMS = Items extra
 MENU_INFO_THROW = Lanzar y patear bombas
-MENU_INFO_ABOUT = Acerca de %s
+MENU_INFO_ABOUT = Acerca de %L
+
+MENU_MOTD_CHOOSE_ROOM = http://cs.next21.ru/dq/bomberman/es/bm_room.html
+MENU_MOTD_HOW_TO = http://cs.next21.ru/dq/bomberman/es/bm_play.html
+MENU_MOTD_ITEMS = http://cs.next21.ru/dq/bomberman/es/bm_extras.html
+MENU_MOTD_THROW = http://cs.next21.ru/dq/bomberman/es/bm_bomb.html
 
 MENU_ROOMS_TITLE = Unirse a una sala
 MENU_ROOMS_ROOM = Sala
@@ -97,13 +108,14 @@ HUD_INFO_THROW_BOMBS = Puedes LANZAR bombas
 
 HUD_SCORE_TITLE = Puntajes
 
+HUD_GAME_START = Empieza el juego!
 HUD_END_WIN = %s ha ganado
 HUD_END_DRAW = Nadie ha ganado.
 
 MENU_GAME_LEAVE_ROOM = Salir del salón
 MENU_GAME_MUSIC_ON = Música:\r [\yON\r]
 MENU_GAME_MUSIC_OFF = Música:\r [\dOFF\r]
-MENU_GAME_CAM = Cámara:\r [\y%s\r]
+MENU_GAME_CAM = Cámara:\r [\y%L\r]
 MENU_GAME_CAM_FIRST_PERSON = 1ra persona
 MENU_GAME_CAM_UP = Desde arriba
 
@@ -147,27 +159,33 @@ MENU_INFO_CHOOSE_ROOM = Выбор комнаты
 MENU_INFO_HOW_TO = Как играть
 MENU_INFO_ITEMS = Дополнительные предметы
 MENU_INFO_THROW = Метание и пинание бомб
-MENU_INFO_ABOUT = О %s
+MENU_INFO_ABOUT = О %L
+
+MENU_MOTD_CHOOSE_ROOM = http://cs.next21.ru/dq/bomberman/ru/bm_room.html
+MENU_MOTD_HOW_TO = http://cs.next21.ru/dq/bomberman/ru/bm_play.html
+MENU_MOTD_ITEMS = http://cs.next21.ru/dq/bomberman/ru/bm_extras.html
+MENU_MOTD_THROW = http://cs.next21.ru/dq/bomberman/ru/bm_bomb.html
 
 MENU_ROOMS_TITLE = Присоединиться к комнате
-MENU_ROOMS_ROOM = Номер
+MENU_ROOMS_ROOM = Комната
 
-HUD_INFO_BOMBS = Бомба
-HUD_INFO_LIFES = Жизнь
+HUD_INFO_BOMBS = Бомбы
+HUD_INFO_LIFES = Жизни
 HUD_INFO_FIRE = Огонь
 HUD_INFO_SPEED = Ускорение
 HUD_INFO_KICK_BOMBS = Вы можете пинать бомбы
-HUD_INFO_THROW_BOMBS = Вы можете бросать бомбы
+HUD_INFO_THROW_BOMBS = Вы можете метать бомбы
 
-HUD_SCORE_TITLE = оценки
+HUD_SCORE_TITLE = Очки
 
+HUD_GAME_START = Игра начинается!
 HUD_END_WIN = %s победил!
 HUD_END_DRAW = Никто не выиграл.
 
 MENU_GAME_LEAVE_ROOM = Выйти из комнаты
 MENU_GAME_MUSIC_ON = Музыка:\r [\yВКЛ\r]
 MENU_GAME_MUSIC_OFF = Музыка:\r [\dВЫКЛ\r]
-MENU_GAME_CAM = Вид камеры:\r [\y%s\r]
+MENU_GAME_CAM = Вид камеры:\r [\y%L\r]
 MENU_GAME_CAM_FIRST_PERSON = От первого лица
 MENU_GAME_CAM_UP = Сверху
 
@@ -184,8 +202,8 @@ CHAT_GAME_WILL_START = Вы начнете играть в новом раунд
 
 CHAT_POWERUP_MAXBOMBS = !yВы подобрали!g бомбу!y, вы можете установить!t еще одну бомбу!y.
 CHAT_POWERUP_FIRE = !yВы подобрали!g огонь!y, выши бомбы будут будут взрываться!t на один блок дальше!y.
-CHAT_POWERUP_SKATE = !yВы подобрали скейт!g роликовые коньки!y,!g выша скорость будет выше!y.
+CHAT_POWERUP_SKATE = !yВы подобрали !g роликовые коньки!y,!g выша скорость будет выше!y.
 CHAT_POWERUP_HEART = !yВы подобрали одну!g жизнь!y.
-CHAT_POWERUP_GLOVES = !yВы подобрали!g перчатку!y, теперь!t вы можете бросать бомбы!y.
+CHAT_POWERUP_GLOVES = !yВы подобрали!g перчатку!y, теперь!t вы можете метать бомбы!y.
 CHAT_POWERUP_KICK = !yВы подобрали!g теперь!y, теперь!t вы можете пинать бомбы!y.
 CHAT_POWERUP_FULLFIRE = !yВы подобрали!g большой огонь!y, теперь ваши бомбы имеют!t максимальную мощность!y.

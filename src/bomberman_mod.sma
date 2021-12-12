@@ -306,29 +306,47 @@ public plugin_init()
 	
 	set_msg_block(get_user_msgid("ScoreInfo"), BLOCK_SET);
 	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_SET);
+
+	register_dictionary("bomberman_mod.txt");
 }
 
 public plugin_cfg()
 {
 	// Creacion de los menus estaticos
-	g_menuintro = menu_create("\yBomberman Mod^n\wBienvenido!", "menu_intro");	
-	menu_additem(g_menuintro, "Unirse a un salon");
-	menu_additem(g_menuintro, "Entrar como espectador^n");
-	menu_additem(g_menuintro, "Informacion del juego");	
+	new szMenuItem[128];
+
+	formatex(szMenuItem, charsmax(szMenuItem), "\y%L^n%L", LANG_PLAYER, "MENU_TAG", LANG_PLAYER, "MENU_INTRO_TITLE");
+	g_menuintro = menu_create(szMenuItem, "menu_intro");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_INTRO_JOIN");
+	menu_additem(g_menuintro, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L^n", LANG_PLAYER, "MENU_INTRO_SPECT");
+	menu_additem(g_menuintro, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_INTRO_INFO");
+	menu_additem(g_menuintro, szMenuItem);
 	menu_setprop(g_menuintro, MPROP_EXIT, MEXIT_NEVER);
 	
-	g_menuconfirm = menu_create("\yBomberman Mod^n\w¿Confirma que desea salir?", "menu_confirm");	
-	menu_additem(g_menuconfirm, "Sí, salir del salón");
-	menu_additem(g_menuconfirm, "No, regresar al menú del juego^n");
+	formatex(szMenuItem, charsmax(szMenuItem), "\y%L^n%L", LANG_PLAYER, "MENU_TAG", LANG_PLAYER, "MENU_CONFIRM_TITLE");
+	g_menuconfirm = menu_create(szMenuItem, "menu_confirm");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_CONFIRM_YES");
+	menu_additem(g_menuconfirm, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L^n", LANG_PLAYER, "MENU_CONFIRM_NO");
+	menu_additem(g_menuconfirm, szMenuItem);
 	menu_setprop(g_menuconfirm, MPROP_EXIT, MEXIT_NEVER);
-		
-	g_menuinfo = menu_create("\yBomberman Mod^n\wInformacion", "menu_info");	
-	menu_additem(g_menuinfo, "Elegir un salon");
-	menu_additem(g_menuinfo, "Como jugar");
-	menu_additem(g_menuinfo, "Items extra");
-	menu_additem(g_menuinfo, "Lanzar y patear bombas^n");
-	menu_additem(g_menuinfo, "Acerca de Bomberman Mod^n");	
-	menu_additem(g_menuinfo, "\yRegresar");	
+	
+	formatex(szMenuItem, charsmax(szMenuItem), "\y%L^n%L", LANG_PLAYER, "MENU_TAG", LANG_PLAYER, "MENU_INFO_TITLE");
+	g_menuinfo = menu_create(szMenuItem, "menu_info");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_INFO_CHOOSE_ROOM");
+	menu_additem(g_menuinfo, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_INFO_HOW_TO");
+	menu_additem(g_menuinfo, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_INFO_ITEMS");
+	menu_additem(g_menuinfo, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L^n", LANG_PLAYER, "MENU_INFO_THROW");
+	menu_additem(g_menuinfo, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L^n", LANG_PLAYER, "MENU_INFO_ABOUT", LANG_PLAYER, "MENU_TAG");
+	menu_additem(g_menuinfo, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", LANG_PLAYER, "MENU_OPT_BACK");
+	menu_additem(g_menuinfo, szMenuItem);	
 	menu_setprop(g_menuinfo, MPROP_EXIT, MEXIT_NEVER);
 	
 	g_regamedll = cvar_exists("mp_round_infinite");
@@ -484,7 +502,7 @@ public clcmd_say_team(id)
 	
 	get_user_name(id, name, 31);
 	
-	format(arg, 191, "^x04(Room %d)^x03 %s^x01 : %s", g_battle[id], name, arg);
+	format(arg, 191, "^x04%L^x03 %s^x01 : %s", LANG_PLAYER, "CHAT_ROOM", g_battle[id], name, arg);
 	
 	new room = g_battle[id];
 	for (new i = 1; i <= 32; i++)
@@ -515,7 +533,7 @@ public clcmd_radio(id)
 // Mostrar el hud a cada jugador, 8 a la vez para evitar sobrecargas
 public task_hud()
 {
-	static id, num = 0, text[150], i;
+	static id, num = 0, text[150], i, iTextLen;
 	
 	set_dhudmessage(0, 255, 0, -1.0, 0.70, 0, 0.5 , 0.5, 0.01, 0.01); 
 	for (id = num; id <= 32; id += 4)
@@ -523,27 +541,19 @@ public task_hud()
 		if (g_status[id] != STATUS_JOINED || !g_canbattle[id])
 			continue;
 		
-		copy(text, charsmax(text), "Bombas^n[");
+		iTextLen = formatex(text, charsmax(text), "%L^n[", id, "HUD_INFO_BOMBS");
 		for (i = 1; i <= g_powerups[id][MAXBOMBS]-g_bombs[id]; i++)
-		{
-			add(text, charsmax(text), "•");
-		}
+			iTextLen = add(text, charsmax(text), "•");
 		for (i = g_powerups[id][MAXBOMBS]-g_bombs[id]; i < g_powerups[id][MAXBOMBS]; i++)
-		{
-			add(text, charsmax(text), "_");
-		}
+			iTextLen = add(text, charsmax(text), "_");
 		
-		add(text, charsmax(text), "]^nVidas^n[");
+		iTextLen += formatex(text[iTextLen], charsmax(text) - iTextLen, "]^n%L^n[", id, "HUD_INFO_LIFES");
 		for (i = 1; i <= g_powerups[id][HEART]; i++)
-		{
-			add(text, charsmax(text), "•");
-		}
+			iTextLen = add(text, charsmax(text), "•");
 		
-		add(text, charsmax(text), "]^nFuego^n[•");
+		formatex(text[iTextLen], charsmax(text) - iTextLen, "]^n%L^n[•", id, "HUD_INFO_FIRE");
 		for (i = 1; i <= g_powerups[id][FIRE]; i++)
-		{
 			add(text, charsmax(text), "•");
-		}
 		
 		add(text, charsmax(text), "]");
 		show_dhudmessage(id, text);
@@ -556,7 +566,7 @@ public task_hud()
 // Mostrar el hud de velocidad, lanzar y patear bombas
 public task_hud2()
 {
-	static id, num = 0, text[150], i;
+	static id, num = 0, text[150], i, iTextLen;
 	
 	set_dhudmessage(0, 255, 0, 1.0, 0.74, 0, 1.3 , 1.3, 0.01, 0.01); 
 	for (id = num; id <= 32; id += 4)
@@ -564,18 +574,16 @@ public task_hud2()
 		if (g_status[id] != STATUS_JOINED || !g_canbattle[id])
 			continue;
 		
-		copy(text, charsmax(text), "Velocidad^n[");
+		formatex(text, charsmax(text), "%L^n[", id, "HUD_INFO_SPEED");
 		for (i = 1; i <= g_powerups[id][SKATE]; i++)
-		{
 			add(text, charsmax(text), "•");
-		}
 		
-		add(text, charsmax(text), "]^n");
+		iTextLen = add(text, charsmax(text), "]^n");
 		if (g_powerups[id][KICK])
-			add(text, charsmax(text),"^nPuedes PATEAR bombas");
+			iTextLen += formatex(text[iTextLen], charsmax(text) - iTextLen, "^n%L", id, "HUD_INFO_KICK_BOMBS");
 		
 		if (g_powerups[id][GLOVES])
-			add(text, charsmax(text),"^nPuedes LANZAR bombas");
+			iTextLen += formatex(text[iTextLen], charsmax(text) - iTextLen, "^n%L", id, "HUD_INFO_THROW_BOMBS");
 		
 		show_dhudmessage(id, text);
 	}
@@ -625,8 +633,7 @@ public task_show_scores()
 		}
 	}
 	
-	
-	len = copy(msg, charsmax(msg), "Puntajes:");
+	len = formatex(msg, charsmax(msg), "%L:", LANG_PLAYER, "HUD_SCORE_TITLE");
 	for (i = 0; i < 4; i++)
 	{
 		if (players[i] == 0)
@@ -649,24 +656,31 @@ public task_show_scores()
 // Mostrar el menu principal
 show_menu_game(id)
 {
-	new menu = menu_create("\yBomberman Mod", "menu_game");
+	static szMenuItem[64];
+
+	formatex(szMenuItem, charsmax(szMenuItem), "\y%L", id, "MENU_TAG");
+	new menu = menu_create(szMenuItem, "menu_game");
 	
-	menu_additem(menu, "Salir del salon");
-	new szitem[30];
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id, "MENU_GAME_LEAVE_ROOM");
+	menu_additem(menu, szMenuItem);
 	
-	menu_additem(menu, music_enabled(id) ? "Musica:\r [\yON\r]" : "Musica:\r [\dOFF\r]");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id,
+		music_enabled(id) ? "MENU_GAME_MUSIC_ON" : "MENU_GAME_MUSIC_OFF");
+	menu_additem(menu, szMenuItem);
 	
 	static const CAMARAS[][] =
 	{
-		"1ra persona",
-		"Desde arriba"
+		"MENU_GAME_CAM_FIRST_PERSON",
+		"MENU_GAME_CAM_UP"
 	};
 	
-	formatex(szitem, charsmax(szitem), "Camara:\r [\y%s\r]", CAMARAS[g_camera[id]]);
-	menu_additem(menu, szitem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id, "MENU_GAME_CAM", id, CAMARAS[g_camera[id]]);
+	menu_additem(menu, szMenuItem);
 	
-	menu_additem(menu, "Informacion del juego^n");
-	menu_additem(menu, "\yCerrar");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L^n", id, "MENU_INTRO_INFO");
+	menu_additem(menu, szMenuItem);
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id, "MENU_OPT_EXIT");
+	menu_additem(menu, szMenuItem);
 	
 	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
 	
@@ -798,7 +812,7 @@ public menu_intro(id, menu, item)
 			if (is_user_alive(id))
 				ExecuteHamB(Ham_Killed, id, id, 0);
 			
-			print_color(id, "^x04[BM]^x01 Presiona^x04 M^x01 para abrir el^x03 menú del juego^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_MAIN_MENU");
 		}
 		case 2:
 		{
@@ -816,31 +830,41 @@ show_menu_info(id)
 
 public menu_info(id, menu, item)
 {
+	static szInfoHeader[32], szInfoBody[64];
+
 	if (is_user_connected(id))
 	{
 		switch (item)
 		{
 			case 0:
 			{
-				show_motd(id, "bm_room.txt", "Elegir un salon");
+				formatex(szInfoHeader, charsmax(szInfoHeader), "%L", id, "MENU_INFO_CHOOSE_ROOM");
+				formatex(szInfoBody, charsmax(szInfoBody), "%L", id, "MENU_MOTD_CHOOSE_ROOM");
+				show_motd(id, szInfoBody, szInfoHeader);
 			}
 			case 1:
 			{
-				show_motd(id, "bm_play.txt", "Como jugar");
+				formatex(szInfoHeader, charsmax(szInfoHeader), "%L", id, "MENU_INFO_HOW_TO");
+				formatex(szInfoBody, charsmax(szInfoBody), "%L", id, "MENU_MOTD_HOW_TO");
+				show_motd(id, szInfoBody, szInfoHeader);
 			}
 			case 2:
 			{
-				show_motd(id, "bm_extras.txt", "Items extra");
+				formatex(szInfoHeader, charsmax(szInfoHeader), "%L", id, "MENU_INFO_ITEMS");
+				formatex(szInfoBody, charsmax(szInfoBody), "%L", id, "MENU_MOTD_ITEMS");
+				show_motd(id, szInfoBody, szInfoHeader);
 			}
 			case 3:
 			{
-				show_motd(id, "bm_bomb.txt", "Lanzar y patear bombas");
+				formatex(szInfoHeader, charsmax(szInfoHeader), "%L", id, "MENU_INFO_THROW");
+				formatex(szInfoBody, charsmax(szInfoBody), "%L", id, "MENU_MOTD_THROW");
+				show_motd(id, szInfoBody, szInfoHeader);
 			}
 			case 4:
 			{
-				print_color(id, "^x04[INFO] Bomberman Mod - Version %s^x01.^x03 Hecho por %s. Lima, Peru. 2015-2020^x01.", VERSION, AUTHOR);
-				print_color(id, "^x04[INFO]^x01 Github:^x04 %s", REPOSITORY);
-				print_color(id, "^x04[INFO]^x01 Hilo oficial en^x03 AMX-ES:^x04 %s", SUPPORT_THREAD);
+				print_color(id, "%L", id, "CHAT_INFO_MSG1", VERSION, AUTHOR);
+				print_color(id, "%L", id, "CHAT_INFO_MSG2", REPOSITORY);
+				print_color(id, "%L", id, "CHAT_INFO_MSG3", SUPPORT_THREAD);
 			}
 			case 5:
 			{
@@ -866,18 +890,20 @@ public menu_info(id, menu, item)
 // Elegir una sala
 show_menu_rooms(id)
 {
-	static item[32], menu, players;
+	static szMenuItem[64];
 	
-	menu = menu_create("Unirse a una sala", "menu_rooms");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id, "MENU_ROOMS_TITLE");
+	new menu = menu_create(szMenuItem, "menu_rooms");
 	
-	for (new i = 0; i < 8; i++)
+	for (new i = 0, players; i < 8; i++)
 	{
 		players = room_players(i+1);
-		formatex(item, charsmax(item), "Sala %d \%s[%d/4]%s", i+1, players == 4 ? "r" : "y", players, i == 7 ? "^n" : "");
-		menu_additem(menu, item, .callback = (players == 4) ? g_menucallback : -1);
+		formatex(szMenuItem, charsmax(szMenuItem), "%L %d \%s[%d/4]%s", id, "MENU_ROOMS_ROOM", i+1, players == 4 ? "r" : "y", players, i == 7 ? "^n" : "");
+		menu_additem(menu, szMenuItem, .callback = (players == 4) ? g_menucallback : -1);
 	}
 	
-	menu_additem(menu, "\yCancelar");
+	formatex(szMenuItem, charsmax(szMenuItem), "%L", id, "MENU_OPT_CANCEL");
+	menu_additem(menu, szMenuItem);
 	
 	menu_setprop(menu, MPROP_PERPAGE, 0);
 	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER);
@@ -904,7 +930,7 @@ public menu_rooms(id, menu, item)
 	players = room_players(room);
 	if (players == 4)
 	{
-		client_print(id, print_center, "La sala esta llena.");
+		client_print(id, print_center, "%L", id, "CHAT_ROOM_FULL");
 		show_menu_rooms(id);
 		
 		return PLUGIN_HANDLED;
@@ -945,7 +971,7 @@ public menu_rooms(id, menu, item)
 	
 	check_endround(room, 1);
 	
-	print_color(id, "^x04[BM]^x01 Comenzaras a jugar cuando reinicie la ronda.");
+	print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_GAME_WILL_START");
 	
 	g_alive[id] = 0;
 	kill_if_not_playing(id);
@@ -1839,16 +1865,16 @@ public fw_PowerUpTouch(ent, id)
 	switch (powerup)
 	{
 		case MAXBOMBS:
-			print_color(id, "^x04[BM]^x01 Has recogido una^x04 bomba^x01, podrás plantar^x03 una bomba más al mismo tiempo^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_MAXBOMBS");
 		case FIRE:
 		{
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego^x01, tus bombas tendrán^x03 un bloque más de alcance^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_FIRE");
 			if (g_powerups[id][FIRE] == 15)
 				return;
 		}
 		case SKATE:
 		{
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 skate^x01,^x03 te moverás más rápido^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_SKATE");
 			
 			if (g_powerups[id][SKATE] >= 9)
 				return;
@@ -1856,15 +1882,15 @@ public fw_PowerUpTouch(ent, id)
 			set_user_maxspeed(id, 220.0 + 30.0*float(g_powerups[id][SKATE]));
 		}
 		case HEART:
-			print_color(id, "^x04[BM]^x01 Has recogido una^x04 vida extra^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_HEART");
 		case GLOVES:
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 guante^x01, ahora^x03 podrás lanzar bombas^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_GLOVES");
 		case KICK:
-			print_color(id, "^x04[BM]^x01 Has recogido unos^x04 zapatos^x01, ahora^x03 podrás patear bombas^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_KICK");
 		case FULL_FIRE:
 		{
 			g_powerups[id][FIRE] = 15;
-			print_color(id, "^x04[BM]^x01 Has recogido un^x04 fuego máximo^x01, tus bombas tendrán^x03 máximo poder^x01.");
+			print_color(id, "%L %L", id, "CHAT_TAG", id, "CHAT_POWERUP_FULLFIRE");
 			return;
 		}
 	}
@@ -2007,7 +2033,7 @@ public task_load_battle(data[], room)
 				{
 					g_canbattle[id] = 1;
 					set_user_maxspeed(id, 220.0);
-					show_hudmessage(id, "Empieza el juego!");
+					show_hudmessage(id, "%L", id, "HUD_GAME_START");
 					entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
 				}
 			}
@@ -2062,9 +2088,9 @@ check_endround(room, ignorewinner = 0)
 				g_canbattle[i] = 0;
 				
 				if (players)
-					show_dhudmessage(i, "%s ha ganado!", name);
+					show_dhudmessage(i, "%L", i, "HUD_END_WIN", name);
 				else
-					show_dhudmessage(i, "Nadie ha ganado.");
+					show_dhudmessage(i, "%L", i, "HUD_END_DRAW");
 			}
 		}
 	}
