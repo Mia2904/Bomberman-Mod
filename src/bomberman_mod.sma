@@ -285,7 +285,7 @@ public plugin_init()
 	
 	register_clcmd("radio1", "clcmd_radio");
 	register_clcmd("radio2", "clcmd_radio");
-	register_clcmd("radio3", "clcmd_radio");
+	register_clcmd("radio3", "clcmd_radio3");
 	
 	register_clcmd("chooseteam", "clcmd_chooseteam");
 	register_clcmd("jointeam", "clcmd_chooseteam");
@@ -517,12 +517,18 @@ public clcmd_say_team(id)
 
 public clcmd_say_cam(id)
 {
-	menu_game(id, 0, 2);
+	toggle_camera(id);
 	return PLUGIN_CONTINUE;
 }
 
 public clcmd_radio(id)
 {
+	return PLUGIN_HANDLED;
+}
+
+public clcmd_radio3(id)
+{
+	toggle_camera(id);
 	return PLUGIN_HANDLED;
 }
 
@@ -721,17 +727,7 @@ public menu_game(id, menu, item)
 		// Cambiar la camara
 		case 2:
 		{
-			g_camera[id] = !g_camera[id];
-			switch (g_camera[id])
-			{
-				case 0: set_view(id, 0);
-				case 1:
-				{
-					set_view(id, 3);
-					fix_camera_angles(id);
-				}
-			}
-			
+			toggle_camera(id);
 			show_menu_game(id);
 		}
 		// Menu de informacion
@@ -2362,6 +2358,23 @@ velocity_by_direction(direction, Float:speed, Float:velOut[3])
 		velOut[1] = direction == 2 ? speed : -speed;
 	}
 	velOut[2] = 0.0;
+}
+
+toggle_camera(id)
+{
+	if (!is_user_connected(id) || g_status[id] < STATUS_JOINING)
+		return;
+
+	g_camera[id] = !g_camera[id];
+	switch (g_camera[id])
+	{
+		case 0: set_view(id, 0);
+		case 1:
+		{
+			set_view(id, 3);
+			fix_camera_angles(id);
+		}
+	}
 }
 
 public fix_camera_angles(id)
