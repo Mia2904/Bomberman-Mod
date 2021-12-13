@@ -70,6 +70,8 @@
 #include <hamsandwich>
 #include <xs>
 
+#tryinclude <reapi>
+
 #if AMXX_VERSION_NUM < 183
 #include <dhudmessage>
 #define client_disconnected client_disconnect
@@ -86,13 +88,6 @@ enum _:POWERUPS // Don't touch this!
 	GLOVES,
 	KICK,
 	FULL_FIRE
-};
-
-enum
-{
-	ANIM_BOMB_IDLE = 0,
-	ANIM_BOMB_SPAWN,
-	ANIM_BOMB_SHAKE
 };
 
 /*================================================================================
@@ -132,7 +127,7 @@ new const POWERUP_CLASSNAME[] = "BM_POWERUP";
 
 new const BOMB_MODEL[] = "models/bomberman_mod/w_bomb_a01.mdl";
 new const BLOCK_MODEL[] = "models/bomberman_mod/block.mdl";
-new const PLAYER_MODEL[] = "bomberman"; // models/player/bomberman/bomberman.mdl
+new const PLAYER_MODEL[] = "bomberman_a01"; // models/player/bomberman_a01/bomberman_a01.mdl
 
 new const BOMB_V_MODEL[] = "models/bomberman_mod/v_throw_bomb.mdl";
 new const DEFAULT_V_MODEL[] = "models/bomberman_mod/v_hands.mdl";
@@ -205,6 +200,18 @@ enum (+= 100)
 	TASK_END
 };
 
+enum
+{
+	ANIM_BOMB_IDLE = 0,
+	ANIM_BOMB_SPAWN,
+	ANIM_BOMB_SHAKE
+};
+
+enum
+{
+	BODY_NULL = 0,
+	BODY_BOMB
+}
 
 new const Float: DIRECTION_ANGLES[][] =
 {
@@ -223,7 +230,9 @@ const HIDE_UNNEEDED = HIDE_MONEY | HIDE_RHA | HIDE_CROSSHAIR;
 
 new g_regamedll;
 new g_msgShowMenu;
+#define m_szAnimExtention 492
 #define m_iUserPrefs 510
+#define SetPlayerAnimExtension(%1,%2) set_pdata_string(%1, m_szAnimExtention * 4, %2, -1, 5 * 4)
 #define PREFS_VGUIMENUS (1<<0)
 #define HasVGUIMenus(%1) (get_pdata_int(%1, m_iUserPrefs) & PREFS_VGUIMENUS)
 #define SetVGUIMenus(%1) set_pdata_int(%1, m_iUserPrefs, (get_pdata_int(%1, m_iUserPrefs) | PREFS_VGUIMENUS))
@@ -991,7 +1000,7 @@ public menu_rooms(id, menu, item)
 	g_alive[id] = 0;
 	kill_if_not_playing(id);
 	
-	cs_set_user_model(id, "bomberman");
+	cs_set_user_model(id, PLAYER_MODEL, true);
 	
 	new Float:origin[3];
 	origin[2] = 140.0;
@@ -1152,6 +1161,8 @@ public fw_CmdStart(id, uc, junk)
 						
 						// Que el jugador vea la bomba
 						entity_set_string(id, EV_SZ_viewmodel, BOMB_V_MODEL);
+						entity_set_int(id, EV_INT_body, BODY_BOMB);
+						SetPlayerAnimExtension(id, "bomb");
 						
 						// Ocultarla
 						entity_set_int(junk, EV_INT_solid, SOLID_NOT);
@@ -1168,6 +1179,13 @@ public fw_CmdStart(id, uc, junk)
 		{
 			// Ya no tienes la bomba
 			entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
+			entity_set_int(id, EV_INT_body, BODY_NULL);
+			SetPlayerAnimExtension(id, "knife");
+
+			// Play throw bomb animation
+			#if defined rg_set_animation
+			rg_set_animation(id, PLAYER_ATTACK1);
+			#endif
 			
 			// Obtener la posicion del jugador
 			entity_get_vector(id, EV_VEC_origin, origin);
@@ -1368,6 +1386,8 @@ remove_weapons(id)
 		strip_user_weapons(id);
 		//give_item(id, "weapon_knife");
 		entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
+		entity_set_int(id, EV_INT_body, BODY_NULL);
+		SetPlayerAnimExtension(id, "knife");
 	}
 }
 
@@ -1393,6 +1413,8 @@ public fw_Killed(id, attacker, shouldgib)
 		return;
 	}
 	
+	entity_set_int(id, EV_INT_body, BODY_NULL);
+
 	set_task(1.0, "disappear_player", id + TASK_DISAPPEAR);
 	
 	// Si terminó la ronda en la sala, nada que hacer.
@@ -2085,6 +2107,8 @@ public task_load_battle(data[], room)
 					set_user_maxspeed(id, 220.0);
 					show_hudmessage(id, "%L", id, "HUD_GAME_START");
 					entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
+					entity_set_int(id, EV_INT_body, BODY_NULL);
+					SetPlayerAnimExtension(id, "knife");
 				}
 			}
 		}
@@ -2168,6 +2192,8 @@ public disappear_player(id)
 appear_player(id)
 {
 	entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
+	entity_set_int(id, EV_INT_body, BODY_NULL);
+	SetPlayerAnimExtension(id, "knife");
 }
 
 // Crear una bomba
