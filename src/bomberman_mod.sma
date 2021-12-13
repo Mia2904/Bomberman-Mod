@@ -88,6 +88,13 @@ enum _:POWERUPS // Don't touch this!
 	FULL_FIRE
 };
 
+enum
+{
+	ANIM_BOMB_IDLE = 0,
+	ANIM_BOMB_SPAWN,
+	ANIM_BOMB_SHAKE
+};
+
 /*================================================================================
  [Editable constants]
 =================================================================================*/
@@ -99,6 +106,7 @@ const Float:THROW_SPEED = 200.0; // Horizontal speed the bomb will move when thr
 const Float:BOMB_Z_POS = 70.0; // Height (absolute Z coord) the bombs will be placed at when planted. I suggest not to edit this.
 const Float:EXP_RADIUS = 12.0; // Explosion radius in each block, used to find victims.
 const Float:GRAVITY = 1700.0; // Server gravity. Kind of bugfix because the blocks in the map are too small and can be climbed without this.
+const Float:SHAKE_ANIMATION_TIME = 0.5; // Time in seconds of the bomb shaking animation before explosion
 
 // How many powerups are spawned in each round
 new const MAX_ITEMS[POWERUPS] = { 
@@ -122,7 +130,7 @@ new const BOX_CLASSNAME[] = "BM_BOX";
 stock const WALL_CLASSNAME[] = "BM_WALL";
 new const POWERUP_CLASSNAME[] = "BM_POWERUP";
 
-new const BOMB_MODEL[] = "models/bomberman_mod/w_bomb.mdl";
+new const BOMB_MODEL[] = "models/bomberman_mod/w_bomb_a01.mdl";
 new const BLOCK_MODEL[] = "models/bomberman_mod/block.mdl";
 new const PLAYER_MODEL[] = "bomberman"; // models/player/bomberman/bomberman.mdl
 
@@ -1233,6 +1241,8 @@ public fw_CmdStart(id, uc, junk)
 						
 			// En cualquier version de bomberman donde existe el item guante, cuando la bomba cae tras ser lanzada se reinicia su contador para explotar
 			entity_set_float(junk, EV_FL_fuser1, curtime + t + DETONATE_DELAY);
+
+			entity_play_animation(junk, ANIM_BOMB_IDLE);
 			
 			// Ya no tienes nada en la mano
 			g_holding[id] = 0;
@@ -1381,7 +1391,7 @@ public fw_BombThink(ent)
 	static id, victim, i, a, killed, maxiters, item;
 	static Float:origin[3], Float:exporigin[3], Float:velocity[3];
 	static Float:exppower;
-	
+
 	// Veamos si hay un flag.
 	switch (entity_get_int(ent, EV_INT_iuser3))
 	{
@@ -1486,9 +1496,19 @@ public fw_BombThink(ent)
 			entity_set_origin(ent, origin);
 			entity_set_vector(ent, EV_VEC_velocity, Float:{ 0.0, 0.0, 0.0 });
 			exptime = entity_get_float(ent, EV_FL_fuser1);
+			entity_set_float(ent, EV_FL_nextthink, exptime - SHAKE_ANIMATION_TIME + 0.01);
+			entity_set_int(ent, EV_INT_iuser3, 4);
+			
+			return;
+		}
+		// Ready to shake animation
+		case 4:
+		{
+			entity_play_animation(ent, ANIM_BOMB_SHAKE);
+			exptime = entity_get_float(ent, EV_FL_fuser1);
 			entity_set_float(ent, EV_FL_nextthink, exptime + 0.01);
 			entity_set_int(ent, EV_INT_iuser3, 0);
-			
+
 			return;
 		}
 	}
@@ -1504,6 +1524,10 @@ public fw_BombThink(ent)
 	// Aun no es tiempo de explotar
 	if (exptime > curtime)
 	{
+		// Play shake animation when the time is right
+		if (exptime - curtime <= SHAKE_ANIMATION_TIME && entity_get_int(ent, EV_INT_sequence) != ANIM_BOMB_SHAKE)
+			entity_play_animation(ent, ANIM_BOMB_SHAKE);
+
 		// Buscamos algún jugador en el lugar de la bomba		
 		victim = -1;
 		origin[2] = origin[2] + 30.0;
@@ -1523,7 +1547,16 @@ public fw_BombThink(ent)
 		entity_set_int(ent, EV_INT_movetype, MOVETYPE_FLY);
 		entity_set_float(ent, EV_FL_gravity, 0.001);
 		entity_set_vector(ent, EV_VEC_velocity, Float:{0.0, 0.0, 0.0});
-		entity_set_float(ent, EV_FL_nextthink, exptime + 0.01);
+
+		// Next think to shake animation or explosion
+		if (exptime - curtime > SHAKE_ANIMATION_TIME)
+		{
+			entity_set_float(ent, EV_FL_nextthink, exptime - SHAKE_ANIMATION_TIME + 0.01);
+			entity_set_int(ent, EV_INT_iuser3, 4);
+		}
+		else
+			entity_set_float(ent, EV_FL_nextthink, exptime + 0.01);
+
 		return;
 	}
 	
@@ -1843,6 +1876,9 @@ public fw_BombTouch(ent, id)
 	
 	entity_set_vector(ent, EV_VEC_velocity, originT);
 	entity_set_float(ent, EV_FL_fuser2, curtime + 0.3);
+
+	if (entity_get_int(ent, EV_INT_sequence) != ANIM_BOMB_SHAKE)
+		entity_play_animation(ent, ANIM_BOMB_IDLE);
 	
 	emit_sound(ent, CHAN_AUTO, SOUND_KICK, VOL_NORM, ATTN_NORM, 0, PITCH_NORM);
 }
@@ -2125,6 +2161,7 @@ create_bomb(id)
 	entity_set_string(ent, EV_SZ_classname, BOMB_CLASSNAME);
 	entity_set_int(ent, EV_INT_iuser1, BOMB_CONST);
 	entity_set_model(ent, BOMB_MODEL);
+	entity_play_animation(ent, ANIM_BOMB_SPAWN);
 	
 	//entity_set_int(ent, EV_INT_movetype, MOVETYPE_FLY);
 	
@@ -2200,6 +2237,14 @@ create_powerup(Float:origin[3], powerup)
 	entity_set_float(ent, EV_FL_nextthink, halflife_time() + 0.3);
 	
 	return ent;
+}
+
+entity_play_animation(ent, iSeq)
+{
+	entity_set_int(ent, EV_INT_sequence, iSeq);
+	entity_set_float(ent, EV_FL_animtime, halflife_time());
+	entity_set_float(ent, EV_FL_frame, 0.0);
+	entity_set_float(ent, EV_FL_framerate, 1.0);
 }
 
 // Ajustar al mapa
