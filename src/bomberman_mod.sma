@@ -205,6 +205,16 @@ enum (+= 100)
 	TASK_END
 };
 
+
+new const Float: DIRECTION_ANGLES[][] =
+{
+	{ 0.0, 0.0, 0.0 },
+	{ 15.0, 0.0, 0.0 },
+	{ 15.0, 90.0, 0.0 },
+	{ 15.0, -179.999, 0.0 },
+	{ 15.0, -90.0, 0.0 }
+};
+
 // Those constants were not defined in AMXX 1.8.2 (HIDEHUD_*)
 const HIDE_RHA = (1<<3);
 const HIDE_MONEY = (1<<5);
@@ -304,6 +314,7 @@ public plugin_init()
 	register_forward(FM_CmdStart, "fw_CmdStart", 1);
 	register_forward(FM_EmitSound, "fw_EmitSound", 0);
 	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Pre", 0);
+	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Post", 1);
 	
 	register_think(BOMB_CLASSNAME, "fw_BombThink");
 	register_think(POWERUP_CLASSNAME, "fw_PowerUpThink");
@@ -1285,6 +1296,13 @@ public fw_AddToFullPack_Pre(es, e, ent, id, hostflags, player, set)
 	// Bye bye
 	forward_return(FMV_CELL, 0);
 	return FMRES_SUPERCEDE;
+}
+
+public fw_AddToFullPack_Post(es, e, ent, id, hostflags, player, set)
+{
+	// Render the player in the last movement direction from 3rd person camera
+	if (player && g_camera[ent] == 1)
+		set_es(es, ES_Angles, DIRECTION_ANGLES[g_direction[ent]]);
 }
 
 //=================================================
@@ -2413,7 +2431,13 @@ toggle_camera(id)
 	g_camera[id] = !g_camera[id];
 	switch (g_camera[id])
 	{
-		case 0: set_view(id, 0);
+		case 0:
+		{
+			set_view(id, 0);
+			entity_set_vector(id, EV_VEC_angles, DIRECTION_ANGLES[g_direction[id]]);
+			entity_set_vector(id, EV_VEC_v_angle, DIRECTION_ANGLES[g_direction[id]]);
+			entity_set_int(id, EV_INT_fixangle, 1);
+		}
 		case 1:
 		{
 			set_view(id, 3);
