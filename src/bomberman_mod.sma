@@ -2136,8 +2136,8 @@ check_endround(room, ignorewinner = 0)
 {
 	if (task_exists(room + TASK_END))
 		return;
-	
-	new players = room_alive_players(room);
+
+	new players = room_alive_players(room, !task_exists(room + TASK_START));
 	
 	if (players > 1 && players < 32)
 		return;
@@ -2358,12 +2358,13 @@ room_players(room)
 
 // Cuandos jugadores vivos hay en un salon
 // Si hay solo 1, retorna 32 + su id
-room_alive_players(room)
+room_alive_players(room, bool:canbattle = true)
 {
 	new pl = 0, last;
 	for (new i = 1; i <= 32; i++)
 	{
-		if (g_status[i] == STATUS_JOINED && g_battle[i] == room && g_canbattle[i] && g_alive[i])
+		if (g_status[i] == STATUS_JOINED && g_battle[i] == room
+			&& (!canbattle || g_canbattle[i]) && g_alive[i])
 		{
 			pl++;
 			last = i;
