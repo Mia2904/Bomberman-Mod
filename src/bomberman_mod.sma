@@ -324,6 +324,7 @@ public plugin_init()
 	register_forward(FM_EmitSound, "fw_EmitSound", 0);
 	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Pre", 0);
 	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Post", 1);
+	register_forward(FM_ClientKill, "fw_ClientKill_Pre", 0);
 	
 	register_think(BOMB_CLASSNAME, "fw_BombThink");
 	register_think(POWERUP_CLASSNAME, "fw_PowerUpThink");
@@ -1323,6 +1324,11 @@ public fw_AddToFullPack_Post(es, e, ent, id, hostflags, player, set)
 		set_es(es, ES_Angles, DIRECTION_ANGLES[g_direction[ent]]);
 }
 
+public fw_ClientKill_Pre(id)
+{
+	return g_canbattle[id] ? FMRES_IGNORED : FMRES_SUPERCEDE;
+}
+
 //=================================================
 public fw_Spawn(id)
 {
@@ -2130,8 +2136,8 @@ check_endround(room, ignorewinner = 0)
 {
 	if (task_exists(room + TASK_END))
 		return;
-	
-	new players = room_alive_players(room);
+
+	new players = room_alive_players(room, !task_exists(room + TASK_START));
 	
 	if (players > 1 && players < 32)
 		return;
@@ -2352,12 +2358,13 @@ room_players(room)
 
 // Cuandos jugadores vivos hay en un salon
 // Si hay solo 1, retorna 32 + su id
-room_alive_players(room)
+room_alive_players(room, bool:canbattle = true)
 {
 	new pl = 0, last;
 	for (new i = 1; i <= 32; i++)
 	{
-		if (g_status[i] == STATUS_JOINED && g_battle[i] == room && g_canbattle[i] && g_alive[i])
+		if (g_status[i] == STATUS_JOINED && g_battle[i] == room
+			&& (!canbattle || g_canbattle[i]) && g_alive[i])
 		{
 			pl++;
 			last = i;
