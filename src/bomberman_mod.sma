@@ -324,6 +324,7 @@ public plugin_init()
 	register_forward(FM_EmitSound, "fw_EmitSound", 0);
 	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Pre", 0);
 	register_forward(FM_AddToFullPack, "fw_AddToFullPack_Post", 1);
+	register_forward(FM_ClientKill, "fw_ClientKill_Pre", 0);
 	
 	register_think(BOMB_CLASSNAME, "fw_BombThink");
 	register_think(POWERUP_CLASSNAME, "fw_PowerUpThink");
@@ -1321,6 +1322,11 @@ public fw_AddToFullPack_Post(es, e, ent, id, hostflags, player, set)
 	// Render the player in the last movement direction from 3rd person camera
 	if (player && g_camera[ent] == 1)
 		set_es(es, ES_Angles, DIRECTION_ANGLES[g_direction[ent]]);
+}
+
+public fw_ClientKill_Pre(id)
+{
+	return g_canbattle[id] ? FMRES_IGNORED : FMRES_SUPERCEDE;
 }
 
 //=================================================
