@@ -10,8 +10,8 @@ MENU_INTRO_JOIN = Join a room
 MENU_INTRO_SPECT = Join as spectator
 MENU_INTRO_INFO = Information
 
-MENU_CONFIRM_TITLE = \wDo you really want to lave?
-MENU_CONFIRM_YES = Yes, leave room
+MENU_CONFIRM_TITLE = \wDo you really want to leave?
+MENU_CONFIRM_YES = Yes, leave from room
 MENU_CONFIRM_NO = No, back to main menu
 
 MENU_INFO_TITLE = \wInformation
