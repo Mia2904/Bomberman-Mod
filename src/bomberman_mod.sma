@@ -129,7 +129,7 @@ new const BOMB_MODEL[] = "models/bomberman_mod/w_bomb_a01.mdl";
 new const BLOCK_MODEL[] = "models/bomberman_mod/block.mdl";
 new const PLAYER_MODEL[] = "bomberman_a01"; // models/player/bomberman_a01/bomberman_a01.mdl
 
-new const DEFAULT_V_MODEL[] = "models/bomberman_mod/v_hands_a01.mdl";
+new const DEFAULT_V_MODEL[] = "models/bomberman_mod/v_hands_a02.mdl";
 
 new const SPRITE_BOMB[] = "sprites/bomberman_mod/bomb.spr";
 new const SPRITE_FIRE[] = "sprites/bomberman_mod/fire.spr";
@@ -1058,7 +1058,7 @@ public client_PreThink(id)
 	{
 		// Quitar el slow down al saltar
 		entity_set_float(id, EV_FL_fuser2, 0.0);
-		
+
 		return;
 	}
 	
