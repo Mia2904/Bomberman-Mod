@@ -129,8 +129,7 @@ new const BOMB_MODEL[] = "models/bomberman_mod/w_bomb_a01.mdl";
 new const BLOCK_MODEL[] = "models/bomberman_mod/block.mdl";
 new const PLAYER_MODEL[] = "bomberman_a01"; // models/player/bomberman_a01/bomberman_a01.mdl
 
-new const BOMB_V_MODEL[] = "models/bomberman_mod/v_throw_bomb.mdl";
-new const DEFAULT_V_MODEL[] = "models/bomberman_mod/v_hands.mdl";
+new const DEFAULT_V_MODEL[] = "models/bomberman_mod/v_hands_a02.mdl";
 
 new const SPRITE_BOMB[] = "sprites/bomberman_mod/bomb.spr";
 new const SPRITE_FIRE[] = "sprites/bomberman_mod/fire.spr";
@@ -166,7 +165,7 @@ new const SOUND_WIN[] = "bomberman_mod/win.wav";
  [Variables / Constantes / Macros]
 =================================================================================*/
 
-new Float:g_nextplant[33], g_bombs[33], g_holding[33];
+new Float:g_nextplant[33], g_bombs[33], g_holding[33], Float: g_viewanimtime[33];
 new g_SprFlame, g_menucallback;
 new g_musicenabled, g_camera[33], g_direction[33], g_battle[33], g_character[33], g_canbattle[33], g_alive[33], g_inbattle[8], g_freeze[8], g_music[8], g_score[33], g_boxdata[8][225 char];
 new g_msgHideWeapon, g_msgSayText;
@@ -212,6 +211,17 @@ enum
 	BODY_NULL = 0,
 	BODY_BOMB
 }
+
+enum
+{
+	ANIM_VIEW_IDLE,
+	ANIM_VIEW_PULLPIN,
+	ANIM_VIEW_THROW,
+	ANIM_VIEW_DEPLOY
+}
+
+#define ANIM_TIME_THROW		0.5
+#define ANIM_TIME_DEPLOY	1.0
 
 new const Float: DIRECTION_ANGLES[][] =
 {
@@ -273,7 +283,6 @@ public plugin_precache()
 	formatex(mdlfullpath, charsmax(mdlfullpath), "models/player/%s/%s.mdl", PLAYER_MODEL, PLAYER_MODEL);
 	precache_model(mdlfullpath);
 	
-	precache_model(BOMB_V_MODEL);
 	precache_model(DEFAULT_V_MODEL);
 	
 	precache_model(SPRITE_BOMB);
@@ -1027,12 +1036,29 @@ public client_PreThink(id)
 {
 	if (!g_alive[id])
 		return;
+
+	static Float:curtime;
+	curtime = halflife_time();
+
+	if (g_viewanimtime[id] > 0.0 && g_viewanimtime[id] <= curtime)
+	{
+		if (pev(id, pev_weaponanim) == ANIM_VIEW_THROW)
+		{
+			send_view_animation(id, ANIM_VIEW_DEPLOY, 0);
+			g_viewanimtime[id] = curtime + ANIM_TIME_DEPLOY;
+		}
+		else
+		{
+			send_view_animation(id, ANIM_VIEW_IDLE, 0);
+			g_viewanimtime[id] = 0.0;
+		}
+	}
 	
 	if (g_canbattle[id])
 	{
 		// Quitar el slow down al saltar
 		entity_set_float(id, EV_FL_fuser2, 0.0);
-		
+
 		return;
 	}
 	
@@ -1161,9 +1187,10 @@ public fw_CmdStart(id, uc, junk)
 						g_holding[id] = junk;
 						
 						// Que el jugador vea la bomba
-						entity_set_string(id, EV_SZ_viewmodel, BOMB_V_MODEL);
 						entity_set_int(id, EV_INT_body, BODY_BOMB);
 						SetPlayerAnimExtension(id, "bomb");
+						send_view_animation(id, ANIM_VIEW_PULLPIN, 1);
+						g_viewanimtime[id] = 0.0;
 						
 						// Ocultarla
 						entity_set_int(junk, EV_INT_solid, SOLID_NOT);
@@ -1179,9 +1206,10 @@ public fw_CmdStart(id, uc, junk)
 		else if (((oldbuttons & ~buttons) & IN_ATTACK) || (camera == 1 && ((oldbuttons & ~buttons) & IN_JUMP))) // Lanzar
 		{
 			// Ya no tienes la bomba
-			entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
 			entity_set_int(id, EV_INT_body, BODY_NULL);
 			SetPlayerAnimExtension(id, "knife");
+			send_view_animation(id, ANIM_VIEW_THROW, 0);
+			g_viewanimtime[id] = curtime + ANIM_TIME_THROW;
 
 			// Play throw bomb animation
 			#if defined rg_set_animation
@@ -2115,6 +2143,7 @@ public task_load_battle(data[], room)
 					entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
 					entity_set_int(id, EV_INT_body, BODY_NULL);
 					SetPlayerAnimExtension(id, "knife");
+					send_view_animation(id, ANIM_VIEW_IDLE, 0);
 				}
 			}
 		}
@@ -2200,6 +2229,7 @@ appear_player(id)
 	entity_set_string(id, EV_SZ_viewmodel, DEFAULT_V_MODEL);
 	entity_set_int(id, EV_INT_body, BODY_NULL);
 	SetPlayerAnimExtension(id, "knife");
+	send_view_animation(id, ANIM_VIEW_IDLE, 0);
 }
 
 // Crear una bomba
@@ -2519,6 +2549,7 @@ reset_vars(id, resetall = 0)
 	g_powerups[id][GLOVES] = g_powerups[id][KICK] = g_holding[id] = g_canbattle[id] = 0;
 	g_nextplant[id] = 0.0;
 	g_direction[id] = 0;
+	g_viewanimtime[id] = 0.0;
 	
 	if (resetall)
 	{
@@ -2543,6 +2574,34 @@ screen_fade(id)
 	write_byte(0);	 		// B
 	write_byte(150);
 	message_end();
+}
+
+send_view_animation(id, anim, body)
+{
+	set_pev(id, pev_weaponanim, anim);
+	message_begin(MSG_ONE, SVC_WEAPONANIM, .player = id);
+	write_byte(anim);
+	write_byte(body);
+	message_end();
+	
+	if (pev(id, pev_iuser1) != 0)
+		return;
+	
+	static specnum, spectators[MAX_PLAYERS];
+	get_players(spectators, specnum, "bch");
+
+	for (new i, spec; i < specnum; i++)
+	{
+		spec = spectators[i];
+		if (pev(spec, pev_iuser1) != 4 || pev(spec, pev_iuser2) != id)
+			continue;
+		
+		set_pev(spec, pev_weaponanim, anim);
+		message_begin(MSG_ONE, SVC_WEAPONANIM, .player = spec);
+		write_byte(anim);
+		write_byte(body);
+		message_end();
+	}
 }
 
 print_color(id, text[], any:...)
