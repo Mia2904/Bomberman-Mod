@@ -1,4 +1,4 @@
-name: Test
+name: Pawn Compiler
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
           sudo mkdir ${{ github.workspace }}/res/addons/amxmodx/plugins
           amxxpc src/bomberman_mod.sma -i"$includePath" -o"src/bomberman_mod.amxx"
       
-      - name: Move compiled plugin
+      - name: Move plugin and make zip
         run: |
           sudo mv ${{ github.workspace }}/src/bomberman_mod.amxx ${{ github.workspace }}/res/addons/amxmodx/plugins/bomberman_mod.amxx
           7z a -tzip resources ${{ github.workspace }}/res/
@@ -57,7 +57,7 @@ jobs:
     needs: [linux]
     
     steps:
-      - name: Deploying linux artifacts
+      - name: Deploying resources artifacts
         uses: actions/download-artifact@v2
         with:
           name: resources.zip
