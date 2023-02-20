@@ -952,7 +952,7 @@ public menu_rooms(id, menu, item)
 	if (!is_user_connected(id))
 		return PLUGIN_HANDLED;
 	
-	if (item == 8)
+	if (item >= 8)
 	{
 		show_menu_intro(id);
 		return PLUGIN_HANDLED;
