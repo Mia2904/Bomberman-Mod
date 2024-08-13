@@ -979,7 +979,7 @@ public menu_rooms(id, menu, item)
 {
 	menu_destroy(menu);
 
-	if (!is_user_connected(id))
+	if (item == MENU_EXIT || !is_user_connected(id))
 		return PLUGIN_HANDLED;
 
 	if (item >= 8)
